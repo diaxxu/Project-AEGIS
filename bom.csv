@@ -1,0 +1,45 @@
+category,item,purpose,qty,unit_price_usd,total_usd,where_to_buy,part_number_or_search,notes
+Ground Station,Raspberry Pi 4 (2GB),Central relay — runs Flask invoke server + MAVProxy,1,40,40,raspberrypi.com / AliExpress,Raspberry Pi 4 Model B 2GB,Pi Zero 2W works too (~$15) if you want to save weight
+Ground Station,USB 4G dongle,Mobile internet uplink for invoke command,1,30,30,Amazon,Huawei E3372h-320,Check your carrier's band compatibility. Alternative: SIM7600 HAT for Pi.
+Ground Station,SiK 915MHz telemetry radio (ground side),MAVLink radio link to quadcopter,1,15,15,AliExpress,SiK telemetry radio 915MHz 100mW,Use 433MHz if you are in Europe/UK/AU. Buy as matched pairs with air-side radios.
+Ground Station,SiK 915MHz telemetry radio (ground side),MAVLink radio link to fixed-wing,1,15,15,AliExpress,SiK telemetry radio 915MHz 100mW,Second pair — set Net ID to 26 to avoid interference with quad pair
+Ground Station,USB power bank 10000mAh,Powers Raspberry Pi in the field,1,10,10,Any,Any 5V 2A+ USB power bank,Or use a 5V 3A BEC from a spare LiPo
+Ground Station,Weatherproof project box,Protects Pi + radios outdoors,1,8,8,Amazon,IP65 project enclosure 200x120x75mm,Drill holes for USB cables and antenna pass-throughs
+Ground Station,USB-A to micro-USB cables (short),Connect SiK radios to Pi,2,3,6,Any,0.3m USB-A to micro-USB,Short cables keep things tidy inside the box
+Quadcopter,Matek H743-Slim v3,Flight controller — STM32H7 runs ArduCopter,1,45,45,mateksys.com / GetFPV,Matek H743-SLIM v3,The v2 also works. Avoid cheap Pixhawk clones — they use slower F4 chips.
+Quadcopter,M8N GPS module with compass,GPS positioning + heading reference,1,18,18,AliExpress,M8N GPS HMC5883L compass,Get one with a tall mast (~10cm) to keep it away from motor noise
+Quadcopter,SiK 915MHz telemetry radio (air side),MAVLink link to ground station,1,15,15,AliExpress,SiK telemetry radio 915MHz air side,Comes in a pair with the ground-side radio — buy as a set
+Quadcopter,F450 frame clone,Main chassis — 450mm motor-to-motor,1,15,15,AliExpress,F450 quadcopter frame kit,Comes with top + bottom plates and 4 arms
+Quadcopter,2212 920KV brushless motors,Propulsion — 4 motors for quad X,4,5,20,AliExpress,Emax MT2213 920KV or equivalent,920KV is ideal for 9-10 inch props on 3S. Check shaft size matches your prop adapter.
+Quadcopter,4-in-1 30A ESC BLHeli_S,Motor speed control — one board for all 4 motors,1,20,20,AliExpress,30A 4-in-1 ESC BLHeli_S,4-in-1 simplifies wiring vs 4 individual ESCs. Must support DSHOT or PWM.
+Quadcopter,9045 propellers CW+CCW pair,Thrust generation,2,5,10,AliExpress,9045 propeller set CW CCW,Buy 2 sets (4 pairs total) — props break. 9 inch diameter 4.5 pitch.
+Quadcopter,3S 2200mAh LiPo battery,Main power source — approx 12-15 min flight,1,20,20,Local hobby shop / HobbyKing,3S 2200mAh 30C LiPo XT60,Do not buy the cheapest possible LiPo — it affects flight time and safety significantly
+Quadcopter,XT60 female connector + 14AWG wire,Battery connector on the power harness,1,3,3,AliExpress,XT60 female connector,Solder to the ESC power input
+Quadcopter,FlySky FS-iA6B receiver,RC receiver for manual override,1,12,12,AliExpress,FlySky FS-iA6B 6ch receiver,Requires FlySky FS-i6 transmitter (see Tools). Outputs IBUS or PPM.
+Quadcopter,FC anti-vibration mounting foam,Isolates FC from motor vibration,1,2,2,AliExpress,Flight controller foam pad M3,Usually included with Matek FC but buy spare just in case
+Quadcopter,M3 standoffs and screws assortment,Mechanical fasteners for FC + ESC mounting,1,3,3,AliExpress,M3 nylon standoff kit,Nylon standoffs for FC to avoid short circuits
+Quadcopter,JST-GH 6-pin cable (SiK radio to FC),Wiring harness from SiK radio to FC UART,1,2,2,AliExpress,JST-GH 1.25mm 6pin cable,Or use loose wire + pin crimper. Length 15cm is enough.
+Fixed-Wing,Matek H743-Wing v2,Flight controller — STM32H7 runs ArduPlane,1,55,55,mateksys.com / GetFPV,Matek H743-WING v2,Has dedicated servo rail and pitot port. Do not use the Slim variant for fixed-wing.
+Fixed-Wing,M8N GPS module with compass,GPS positioning,1,18,18,AliExpress,M8N GPS HMC5883L compass,Identical to quad unit — buy two at once to save on shipping
+Fixed-Wing,SiK 915MHz telemetry radio (air side),MAVLink link to ground station,1,15,15,AliExpress,SiK telemetry radio 915MHz air side,Second pair — paired with the second ground radio at Net ID 26
+Fixed-Wing,SkyWalker X8 flying wing 1880mm,Main airframe — large efficient flying wing,1,50,50,AliExpress / HobbyKing,SkyWalker X8 EPO flying wing,The 1880mm version has excellent endurance. X5 (1500mm) is a cheaper smaller option.
+Fixed-Wing,2216 1400KV brushless motor (pusher),Rear pusher propulsion,1,15,15,AliExpress,2216 1400KV brushless motor,1400KV works well on 3S with 10x4.7 pusher prop. Goes at the rear of the X8.
+Fixed-Wing,30A ESC,Motor speed control for FW motor,1,10,10,AliExpress,30A ESC BLHeli or SimonK,Standard hobby ESC. Ensure it has a 5V BEC output to power servos + FC.
+Fixed-Wing,9g servos (metal gear),Elevon control — one per elevon,2,3,6,AliExpress,MG90S metal gear servo,Metal gear preferred over plastic for longevity. Standard PWM servo interface.
+Fixed-Wing,10x4.7 pusher propeller,Thrust — pusher config faces backward,1,5,5,AliExpress,10x4.7 pusher propeller CCW,Pusher props are reverse-threaded — confirm your motor rotation direction first
+Fixed-Wing,3S 4000mAh LiPo battery,Main power — approx 40-50 min flight,1,25,25,Local hobby shop / HobbyKing,3S 4000mAh 30C LiPo XT60,Heavier battery = longer flight time but slower climb. X8 can carry up to 5000mAh.
+Fixed-Wing,FlySky FS-iA6B receiver,RC receiver for manual override,1,12,12,AliExpress,FlySky FS-iA6B 6ch receiver,Same receiver as quad — buy two at once
+Fixed-Wing,JST-GH 6-pin cable (SiK radio to FC),Wiring harness from SiK radio to FC UART,1,2,2,AliExpress,JST-GH 1.25mm 6pin cable,
+Fixed-Wing,Servo extension cables 30cm,Extend servo wires to reach FC in fuselage,2,2,4,AliExpress,Servo extension cable 30cm JR,
+Tools & Consumables,FlySky FS-i6 RC transmitter,Manual override transmitter for both aircraft,1,35,35,AliExpress,FlySky FS-i6 2.4GHz 6ch transmitter,You need ONE transmitter but TWO receivers (bound separately). Essential safety item.
+Tools & Consumables,LiPo balance charger,Charges all LiPo batteries safely,1,25,25,AliExpress / hobby shop,ISDT Q6 Plus or SKYRC B6 clone,Must support 3S balance charging. Never charge LiPo without a balance charger.
+Tools & Consumables,Soldering iron + solder,Wiring all electrical connections,1,25,25,Any,60W adjustable soldering iron,A decent iron makes a huge difference. Avoid the very cheapest fixed-temp ones.
+Tools & Consumables,Heat shrink tubing assortment,Insulate all solder joints,1,5,5,Any / AliExpress,Heat shrink assortment 2-10mm,
+Tools & Consumables,Zip ties assortment,Cable management on both aircraft,1,3,3,Any,Zip tie assortment 100mm 150mm 200mm,
+Tools & Consumables,Double-sided foam tape,Mounting FC + ESC + electronics,1,3,3,Any,3M VHB foam tape 1mm,
+Tools & Consumables,Multimeter,Voltage checks + continuity testing,1,15,15,Any / AliExpress,Basic digital multimeter,Absolutely necessary. Use it before every flight to check LiPo voltage.
+Tools & Consumables,M3 hex screwdriver set,Frame assembly,1,5,5,Any,M3 hex key / allen key set,
+Tools & Consumables,Wire stripper + crimper,Preparing wires,1,8,8,Any,Wire stripper crimper combo tool,
+Tools & Consumables,LiPo safe charging bag,Fire-safe bag for charging LiPo batteries,2,8,16,Amazon / hobby shop,LiPo safe bag medium,One per aircraft. Charge ALL LiPos inside these bags. Non-negotiable safety item.
+Tools & Consumables,MicroSD card 16GB (for RPi),Raspberry Pi OS storage,1,8,8,Any,16GB microSD Class 10,
+Tools & Consumables,Laptop with Windows or Mac or Linux,Mission Planner + parameter loading,1,0,0,You already own this,Mission Planner runs on Windows natively; use Wine or VM on Mac/Linux,
