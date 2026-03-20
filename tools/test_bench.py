@@ -1,4 +1,7 @@
 #!/usr/bin/env python3
+import collections
+import collections.abc
+collections.MutableMapping = collections.abc.MutableMapping
 """
 AEGIS Bench Test
 ----------------
