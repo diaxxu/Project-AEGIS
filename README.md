@@ -697,7 +697,6 @@ Both aircraft RTL automatically. The quad will land at the home point. Fly the f
 | USA | [FAA DroneZone](https://faadronezone.faa.gov/) — register if over 250g |
 | UK | [CAA Register](https://register-drones.caa.co.uk/) — required |
 | EU | [EASA](https://www.easa.europa.eu/en/domains/drones) — required |
-| Morocco 🇲🇦 | [ANAC](https://www.anac.gov.ma) — registration required |
 | Canada | [Transport Canada](https://tc.canada.ca/en/aviation/drone-safety) |
 
 ### This project is for educational purposes
