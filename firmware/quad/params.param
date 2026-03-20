@@ -1,0 +1,63 @@
+# AEGIS Quadcopter — ArduCopter parameters
+# Load via Mission Planner: Config → Full Parameter List → Load from file
+#
+# Hardware: Matek H743-Slim v3
+# Firmware: ArduCopter 4.x stable
+# Frame:    F450 clone, quad X
+#
+# HOW TO USE:
+# 1. Flash ArduCopter, run all calibrations first
+# 2. THEN load this file to apply the AEGIS-specific settings
+# 3. Reboot the FC after loading
+
+# --- Failsafes ---
+FS_GCS_ENABLE,1          # GCS (ground station) failsafe ON
+FS_GCS_TIMEOUT,5         # Lost link for 5 sec → RTL
+FS_THR_ENABLE,1          # RC throttle failsafe ON
+FS_THR_VALUE,975         # Throttle below 975us = lost RC signal
+FS_THR_ACTION,1          # RC lost → RTL (1=RTL, 2=Continue, 3=Land)
+
+# --- Battery failsafe ---
+BATT_MONITOR,4           # Enable voltage+current monitoring
+BATT_LOW_VOLT,10.5       # 3.5V/cell on 3S — warning threshold
+BATT_LOW_ACTION,2        # Low battery → RTL
+BATT_CRT_VOLT,9.9        # 3.3V/cell on 3S — critical threshold
+BATT_CRT_ACTION,2        # Critical battery → RTL (or Land if close)
+
+# --- Return to Launch ---
+RTL_ALT,3000             # Climb to 30m before flying home
+RTL_LOIT_TIME,0          # No loiter at home before landing
+RTL_SPEED,0              # Use WPNAV_SPEED for RTL
+
+# --- Navigation ---
+WPNAV_SPEED,500          # Max waypoint speed: 5 m/s (safe for first flights)
+WPNAV_ACCEL,250          # Acceleration: 2.5 m/s²
+WPNAV_RADIUS,200         # Consider WP reached when within 2m
+GUIDED_SPEED_MAX,500     # Max speed in GUIDED mode: 5 m/s
+
+# --- Telemetry (SiK radio on UART2) ---
+SERIAL2_PROTOCOL,2       # MAVLink2
+SERIAL2_BAUD,57          # 57600 baud
+
+# --- Pre-arm checks ---
+ARMING_CHECK,1           # All checks enabled
+
+# --- EKF ---
+EK3_ENABLE,1             # EKF3 enabled (better than EKF2)
+EK2_ENABLE,0             # Disable old EKF2
+
+# --- GPS ---
+GPS_TYPE,1               # Auto-detect GPS (works with M8N)
+GPS_HDOP_GOOD,140        # Accept GPS fix when HDOP < 1.4
+
+# --- Compass ---
+COMPASS_USE,1
+COMPASS_USE2,0           # Only use primary compass (M8N internal)
+COMPASS_USE3,0
+
+# --- Logging ---
+LOG_BITMASK,180223       # Log IMU, GPS, RCIN, attitude, etc.
+LOG_DISARMED,0           # Only log when armed
+
+# --- Arm/disarm ---
+DISARM_DELAY,10          # Auto-disarm 10 sec after landing

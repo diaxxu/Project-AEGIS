@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>AEGIS</title>
+<style>
+  :root {
+    --bg: #0a0f1a;
+    --surface: #111827;
+    --border: rgba(0,210,180,0.18);
+    --accent: #00d4b4;
+    --accent2: #ff6b35;
+    --text: #c8f0eb;
+    --muted: rgba(200,240,235,0.45);
+    --red: #ff4757;
+    --green: #00d4b4;
+    --mono: 'Courier New', monospace;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--mono);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 20px;
+    user-select: none;
+  }
+
+  .header {
+    text-align: center;
+    width: 100%;
+  }
+
+  .logo {
+    font-size: 11px;
+    letter-spacing: 5px;
+    color: var(--accent);
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    font-size: 10px;
+    letter-spacing: 2px;
+    color: var(--muted);
+  }
+
+  /* Status cards */
+  .status-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    width: 100%;
+    max-width: 380px;
+  }
+
+  .vehicle-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+  }
+
+  .v-name {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--accent);
+    margin-bottom: 8px;
+  }
+
+  .v-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 10px;
+    padding: 2px 0;
+  }
+
+  .v-key { color: var(--muted); }
+  .v-val { color: var(--text); }
+  .v-val.ok { color: var(--accent); }
+  .v-val.warn { color: #ffb347; }
+  .v-val.bad { color: var(--red); }
+
+  /* GPS card */
+  .gps-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    width: 100%;
+    max-width: 380px;
+    text-align: center;
+  }
+
+  .gps-label {
+    font-size: 9px;
+    letter-spacing: 2px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  .gps-coords {
+    font-size: 13px;
+    color: var(--text);
+    margin-bottom: 4px;
+  }
+
+  .gps-accuracy {
+    font-size: 10px;
+    color: var(--muted);
+  }
+
+  .gps-accuracy.good { color: var(--accent); }
+  .gps-accuracy.bad { color: var(--red); }
+
+  /* Invoke button */
+  .invoke-wrap {
+    width: 100%;
+    max-width: 380px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .invoke-btn {
+    width: 100%;
+    padding: 20px 0;
+    background: rgba(0,212,180,0.1);
+    border: 1.5px solid var(--accent);
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 16px;
+    letter-spacing: 4px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.1s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .invoke-btn:hover { background: rgba(0,212,180,0.2); }
+  .invoke-btn:active { transform: scale(0.97); }
+
+  .invoke-btn:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    transform: none;
+  }
+
+  .invoke-btn.armed {
+    background: rgba(255,71,87,0.12);
+    border-color: var(--red);
+    color: var(--red);
+    animation: armPulse 1.2s ease-in-out infinite;
+  }
+
+  .invoke-btn.success {
+    background: rgba(0,212,180,0.2);
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  @keyframes armPulse {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.55; }
+  }
+
+  .abort-btn {
+    width: 100%;
+    padding: 12px 0;
+    background: transparent;
+    border: 1px solid rgba(255,71,87,0.3);
+    color: rgba(255,71,87,0.6);
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 3px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .abort-btn:hover {
+    background: rgba(255,71,87,0.1);
+    border-color: var(--red);
+    color: var(--red);
+  }
+
+  /* Log */
+  .log {
+    width: 100%;
+    max-width: 380px;
+    background: rgba(0,0,0,0.3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    height: 90px;
+    overflow-y: auto;
+    font-size: 10px;
+  }
+
+  .log-line {
+    padding: 1px 0;
+    color: var(--muted);
+    border-bottom: 1px solid rgba(0,212,180,0.04);
+  }
+
+  .log-line.ok   { color: var(--accent); }
+  .log-line.warn { color: #ffb347; }
+  .log-line.err  { color: var(--red); }
+
+  .spinner {
+    display: inline-block;
+    animation: spin 1s linear infinite;
+    font-size: 12px;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">AEGIS</div>
+  <div class="subtitle">AUTONOMOUS ESCORT SYSTEM</div>
+</div>
+
+<div class="status-grid" id="statusGrid">
+  <div class="vehicle-card">
+    <div class="v-name">QUADCOPTER</div>
+    <div class="v-row"><span class="v-key">LINK</span><span class="v-val" id="qLink">—</span></div>
+    <div class="v-row"><span class="v-key">MODE</span><span class="v-val" id="qMode">—</span></div>
+    <div class="v-row"><span class="v-key">GPS</span><span class="v-val" id="qGps">—</span></div>
+    <div class="v-row"><span class="v-key">BATT</span><span class="v-val" id="qBatt">—</span></div>
+    <div class="v-row"><span class="v-key">ARM</span><span class="v-val" id="qArm">—</span></div>
+  </div>
+  <div class="vehicle-card">
+    <div class="v-name">FIXED-WING</div>
+    <div class="v-row"><span class="v-key">LINK</span><span class="v-val" id="fLink">—</span></div>
+    <div class="v-row"><span class="v-key">MODE</span><span class="v-val" id="fMode">—</span></div>
+    <div class="v-row"><span class="v-key">GPS</span><span class="v-val" id="fGps">—</span></div>
+    <div class="v-row"><span class="v-key">BATT</span><span class="v-val" id="fBatt">—</span></div>
+    <div class="v-row"><span class="v-key">SPEED</span><span class="v-val" id="fSpd">—</span></div>
+  </div>
+</div>
+
+<div class="gps-card">
+  <div class="gps-label">YOUR GPS</div>
+  <div class="gps-coords" id="gpsCoords">Acquiring...</div>
+  <div class="gps-accuracy" id="gpsAcc">Waiting for GPS lock</div>
+</div>
+
+<div class="invoke-wrap">
+  <button class="invoke-btn" id="invokeBtn" onclick="handleInvoke()">
+    INVOKE AEGIS
+  </button>
+  <button class="abort-btn" onclick="handleAbort()">
+    ABORT — SEND ALL RTL
+  </button>
+</div>
+
+<div class="log" id="log">
+  <div class="log-line">System ready. Waiting for invoke command.</div>
+</div>
+
+<script>
+let userLat = null, userLon = null, userAcc = null;
+let invokeActive = false;
+
+// -------------------------------------------------------
+// GPS
+// -------------------------------------------------------
+
+function startGPS() {
+  if (!navigator.geolocation) {
+    addLog("GPS not supported in this browser", "err");
+    return;
+  }
+  navigator.geolocation.watchPosition(
+    pos => {
+      userLat = pos.coords.latitude;
+      userLon = pos.coords.longitude;
+      userAcc = pos.coords.accuracy;
+
+      document.getElementById("gpsCoords").textContent =
+        userLat.toFixed(6) + ", " + userLon.toFixed(6);
+
+      const accEl = document.getElementById("gpsAcc");
+      accEl.textContent = "Accuracy: ±" + Math.round(userAcc) + "m";
+      accEl.className = "gps-accuracy " + (userAcc < 10 ? "good" : "bad");
+    },
+    err => {
+      addLog("GPS error: " + err.message, "err");
+      document.getElementById("gpsAcc").textContent = "GPS error — " + err.message;
+      document.getElementById("gpsAcc").className = "gps-accuracy bad";
+    },
+    { enableHighAccuracy: true, maximumAge: 0 }
+  );
+}
+
+// -------------------------------------------------------
+// Status polling
+// -------------------------------------------------------
+
+function pollStatus() {
+  fetch("/status")
+    .then(r => r.json())
+    .then(data => {
+      updateVehicle("q", data.quad);
+      updateVehicle("f", data.fw);
+    })
+    .catch(() => {
+      // Server not reachable
+      setEl("qLink", "OFFLINE", "bad");
+      setEl("fLink", "OFFLINE", "bad");
+    });
+}
+
+function updateVehicle(prefix, v) {
+  if (!v || !v.connected) {
+    setEl(prefix + "Link", "OFFLINE", "bad");
+    ["Mode","Gps","Batt","Arm","Spd"].forEach(s => setEl(prefix + s, "—", ""));
+    return;
+  }
+
+  setEl(prefix + "Link", "ONLINE", "ok");
+
+  const mode = v.mode || "—";
+  setEl(prefix + "Mode", mode, mode === "GUIDED" || mode === "AUTO" ? "ok" : "");
+
+  const gpsFix = v.gps_fix >= 3 ? (v.satellites + " sat") : "NO FIX";
+  setEl(prefix + "Gps", gpsFix, v.gps_fix >= 3 ? "ok" : "bad");
+
+  const batt = v.battery_voltage ? v.battery_voltage.toFixed(1) + "V" : "—";
+  const battClass = v.battery_voltage < 10.8 ? "bad" : v.battery_voltage < 11.2 ? "warn" : "ok";
+  setEl(prefix + "Batt", batt, battClass);
+
+  if (prefix === "q") {
+    setEl("qArm", v.armed ? "ARMED" : "DISARMED", v.armed ? "warn" : "ok");
+  } else {
+    setEl("fSpd", v.groundspeed != null ? v.groundspeed.toFixed(1) + " m/s" : "—", "");
+  }
+}
+
+function setEl(id, text, cls) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.textContent = text;
+  el.className = "v-val" + (cls ? " " + cls : "");
+}
+
+// -------------------------------------------------------
+// Invoke
+// -------------------------------------------------------
+
+async function handleInvoke() {
+  if (invokeActive) return;
+
+  if (userLat === null || userLon === null) {
+    addLog("No GPS fix — cannot invoke", "err");
+    return;
+  }
+
+  if (userAcc > 20) {
+    const ok = confirm(
+      "GPS accuracy is low (±" + Math.round(userAcc) + "m). Invoke anyway?"
+    );
+    if (!ok) return;
+  }
+
+  invokeActive = true;
+  const btn = document.getElementById("invokeBtn");
+  btn.disabled = true;
+  btn.className = "invoke-btn armed";
+  btn.textContent = "INVOKING...";
+
+  addLog("Sending invoke to ground station...", "ok");
+  addLog("Target: " + userLat.toFixed(6) + ", " + userLon.toFixed(6), "");
+
+  try {
+    const res = await fetch("/invoke", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ lat: userLat, lon: userLon }),
+    });
+    const data = await res.json();
+
+    if (data.ok) {
+      btn.textContent = "INVOKED ✓";
+      btn.className = "invoke-btn success";
+      addLog("Invoke accepted by ground station", "ok");
+      addLog("Quad and FW receiving commands...", "ok");
+    } else {
+      throw new Error(data.error || "Unknown error");
+    }
+  } catch (err) {
+    addLog("Invoke failed: " + err.message, "err");
+    btn.textContent = "INVOKE AEGIS";
+    btn.className = "invoke-btn";
+    btn.disabled = false;
+    invokeActive = false;
+  }
+}
+
+// -------------------------------------------------------
+// Abort
+// -------------------------------------------------------
+
+async function handleAbort() {
+  const ok = confirm("Send RTL to ALL vehicles?");
+  if (!ok) return;
+
+  addLog("ABORT — sending RTL to all vehicles", "warn");
+
+  try {
+    const res = await fetch("/abort", { method: "POST" });
+    const data = await res.json();
+    addLog(data.ok ? "RTL command sent" : "RTL failed: " + data.error,
+           data.ok ? "warn" : "err");
+  } catch (err) {
+    addLog("Could not reach server: " + err.message, "err");
+  }
+
+  // Reset invoke button
+  const btn = document.getElementById("invokeBtn");
+  btn.textContent = "INVOKE AEGIS";
+  btn.className = "invoke-btn";
+  btn.disabled = false;
+  invokeActive = false;
+}
+
+// -------------------------------------------------------
+// Log
+// -------------------------------------------------------
+
+function addLog(msg, cls = "") {
+  const log = document.getElementById("log");
+  const now = new Date();
+  const ts = String(now.getHours()).padStart(2,"0") + ":" +
+             String(now.getMinutes()).padStart(2,"0") + ":" +
+             String(now.getSeconds()).padStart(2,"0");
+  const line = document.createElement("div");
+  line.className = "log-line " + cls;
+  line.textContent = ts + "  " + msg;
+  log.appendChild(line);
+  log.scrollTop = log.scrollHeight;
+}
+
+// -------------------------------------------------------
+// Init
+// -------------------------------------------------------
+
+startGPS();
+pollStatus();
+setInterval(pollStatus, 3000);
+addLog("GPS acquiring...");
+</script>
+</body>
+</html>

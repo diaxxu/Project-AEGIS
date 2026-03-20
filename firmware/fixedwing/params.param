@@ -1,0 +1,87 @@
+# AEGIS Fixed-Wing — ArduPlane parameters
+# Load via Mission Planner: Config → Full Parameter List → Load from file
+#
+# Hardware: Matek H743-Wing v2
+# Firmware: ArduPlane 4.x stable
+# Airframe: SkyWalker X8 flying wing (elevon)
+#
+# HOW TO USE:
+# 1. Flash ArduPlane, run all calibrations first
+# 2. THEN load this file
+# 3. Verify servo directions BEFORE first flight (see README Phase 2 Step 6)
+
+# --- Airframe type ---
+ELEVON_OUTPUT,4          # Elevon mixing (flying wing / X8)
+                         # 4 = elevon mode (mix pitch+roll into two servos)
+
+# --- Failsafes ---
+FS_GCS_ENABLE,1          # GCS (ground station) failsafe ON
+FS_GCS_TIMEOUT,5         # Lost link for 5 sec → RTL
+FS_SHORT_ACTN,0          # Short RC failsafe: 0 = continue in AUTO
+FS_LONG_ACTN,1           # Long RC failsafe: 1 = RTL
+
+# --- Battery failsafe ---
+BATT_MONITOR,4
+BATT_LOW_VOLT,10.5       # 3S low voltage threshold
+BATT_LOW_ACTION,2        # → RTL
+BATT_CRT_VOLT,9.9
+BATT_CRT_ACTION,2
+
+# --- Return to Launch ---
+RTL_ALTITUDE,5000        # Climb to 50m before flying home (more airspace needed for FW)
+RTL_AUTOLAND,0           # Do not auto-land on RTL (land manually with RC)
+
+# --- Speed ---
+CRUISE_SPEED,14          # Cruise speed target: 14 m/s (good for X8)
+AIRSPEED_MIN,10          # Minimum airspeed (stall prevention)
+AIRSPEED_MAX,22          # Maximum airspeed
+AIRSPEED_CRUISE,14       # Airspeed to hold in AUTO
+ARSPD_USE,0              # 0 = no airspeed sensor (fine without pitot for loiter)
+                         # Set to 1 if you install a pitot tube
+
+# --- Loiter ---
+WP_LOITER_RAD,50         # Loiter orbit radius: 50m
+LOITER_RADIUS,50         # Same — radius when entering LOITER mode
+WP_MAX_RADIUS,0          # 0 = use WP_LOITER_RAD
+
+# --- Navigation ---
+NAVL1_PERIOD,20          # L1 navigation period — lower = tighter tracking
+NAVL1_DAMPING,0.75       # L1 damping
+
+# --- Pitch/Roll limits ---
+LIM_ROLL_CD,4500         # Max roll: 45 degrees
+LIM_PITCH_MAX,2000       # Max pitch up: 20 degrees
+LIM_PITCH_MIN,-1500      # Max pitch down: 15 degrees
+
+# --- Throttle ---
+THR_MIN,0                # Minimum throttle (can cut engine if needed)
+THR_MAX,100              # Maximum throttle
+THR_CRUISE,50            # Cruise throttle estimate (tune after first flight)
+THR_FAILSAFE,1           # Enable throttle failsafe
+
+# --- Telemetry (SiK radio on UART2) ---
+SERIAL2_PROTOCOL,2       # MAVLink2
+SERIAL2_BAUD,57          # 57600 baud
+
+# --- Pre-arm checks ---
+ARMING_CHECK,1
+
+# --- EKF ---
+EK3_ENABLE,1
+EK2_ENABLE,0
+
+# --- GPS ---
+GPS_TYPE,1
+
+# --- Compass ---
+COMPASS_USE,1
+COMPASS_USE2,0
+COMPASS_USE3,0
+
+# --- Logging ---
+LOG_BITMASK,180223
+LOG_DISARMED,0
+
+# --- Auto takeoff ---
+TKOFF_ALT,3000           # Auto-takeoff target altitude: 30m
+                         # (only used if you add a TAKEOFF waypoint to the mission)

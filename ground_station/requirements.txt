@@ -1,0 +1,4 @@
+dronekit>=2.9.2
+flask>=2.3.0
+pymavlink>=2.4.40
+requests>=2.31.0

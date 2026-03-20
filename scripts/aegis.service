@@ -1,0 +1,21 @@
+[Unit]
+Description=AEGIS Ground Station Invoke Server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=pi
+WorkingDirectory=/home/pi/aegis/ground_station
+ExecStart=/usr/bin/python3 /home/pi/aegis/ground_station/invoke_server.py
+Restart=on-failure
+RestartSec=5
+StandardOutput=journal
+StandardError=journal
+
+# Environment overrides — change serial ports here if needed
+Environment=AEGIS_QUAD_PORT=/dev/ttyUSB0
+Environment=AEGIS_FW_PORT=/dev/ttyUSB1
+
+[Install]
+WantedBy=multi-user.target
